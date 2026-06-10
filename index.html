@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Road Trip"/>
+<title>🇺🇸 Road Trip 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#181c26;--surface2:#1e2332;--border:#2a3040;
+  --accent:#e8a83e;--accent2:#5b9cf0;--green:#44cc88;--red:#ff5555;--amber:#ffaa44;
+  --text:#e8ecf4;--text2:#8a95a8;--text3:#5a6478;--radius:14px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-text-size-adjust:100%;}
+#app{max-width:480px;margin:0 auto;padding:0 0 90px;}
+.app-header{background:linear-gradient(160deg,#1a1f2e 0%,#0f1117 100%);padding:env(safe-area-inset-top,16px) 20px 0;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;}
+.header-inner{padding:16px 0 0;}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.app-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--accent);letter-spacing:-0.5px;}
+.app-subtitle{font-size:12px;color:var(--text2);font-weight:300;margin-bottom:12px;}
+.nav-tabs{display:flex;gap:4px;padding:0 0 12px;}
+.nav-tab{flex:1;padding:9px 4px;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;background:var(--surface2);color:var(--text2);}
+.nav-tab.active{background:var(--accent);color:#0f1117;font-weight:600;}
+.overview-strip{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;gap:8px;}
+.ov-item{display:flex;flex-direction:column;align-items:center;min-width:fit-content;}
+.ov-num{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--accent);}
+.ov-label{font-size:10px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;}
+.ov-divider{width:1px;height:28px;background:var(--border);flex-shrink:0;}
+.today-hero{margin:16px 16px 0;background:linear-gradient(135deg,#1e2640 0%,#182030 100%);border:1px solid #2a3550;border-radius:18px;padding:20px;position:relative;overflow:hidden;}
+.today-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(232,168,62,0.12) 0%,transparent 70%);}
+.today-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:6px;}
+.today-city{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--text);line-height:1.1;margin-bottom:4px;}
+.today-date-lbl{font-size:13px;color:var(--text2);margin-bottom:10px;}
+.today-activity{font-size:14px;color:var(--text);line-height:1.5;margin-bottom:14px;}
+.pre-trip{margin:16px;background:linear-gradient(135deg,#1e2640 0%,#182030 100%);border:1px solid #2a3550;border-radius:18px;padding:24px;text-align:center;}
+.pre-trip-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--accent);margin-bottom:8px;}
+.pre-trip-sub{font-size:13px;color:var(--text2);margin-bottom:16px;}
+.countdown{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:var(--text);line-height:1;}
+.countdown-label{font-size:13px;color:var(--text3);margin-top:6px;}
+.section-header{padding:16px 20px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);}
+.days-list{padding:10px 16px;display:flex;flex-direction:column;gap:10px;}
+.day-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:border-color 0.2s;}
+.day-card.active{border-color:var(--accent);box-shadow:0 0 0 1px rgba(232,168,62,0.2);}
+.day-card.today-card{border-color:var(--green);box-shadow:0 0 0 1px rgba(68,204,136,0.2);}
+.day-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+.day-number{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;}
+.day-date-lbl{font-size:12px;color:var(--text2);}
+.driving-badge{font-size:11px;background:rgba(91,156,240,0.15);color:var(--accent2);padding:2px 8px;border-radius:20px;margin-left:auto;}
+.today-badge{font-size:11px;background:rgba(68,204,136,0.15);color:var(--green);padding:2px 8px;border-radius:20px;margin-left:auto;}
+.day-city{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.day-activity-text{font-size:13px;color:var(--text2);line-height:1.4;}
+.day-expanded{margin-top:14px;display:flex;flex-direction:column;gap:10px;animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.weather-widget{background:rgba(91,156,240,0.08);border:1px solid rgba(91,156,240,0.2);border-radius:10px;padding:12px 14px;}
+.weather-main{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.weather-temp{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--accent2);}
+.weather-cond{font-size:13px;color:var(--text2);}
+.weather-details{display:flex;gap:12px;font-size:12px;color:var(--text3);flex-wrap:wrap;}
+.weather-loading{font-size:12px;color:var(--text3);padding:10px;background:rgba(91,156,240,0.05);border:1px solid rgba(91,156,240,0.1);border-radius:8px;text-align:center;}
+.info-grid{display:flex;flex-direction:column;gap:8px;}
+.info-block{background:var(--surface2);border-radius:10px;padding:12px;}
+.info-block.drive{border-left:3px solid var(--accent2);}
+.info-block.stay{border-left:3px solid var(--accent);}
+.info-block.notes-block{border-left:3px solid #7c5cbf;}
+.info-block.fuel{border-left:3px solid var(--amber);}
+.info-block.suggestion{border-left:3px solid var(--green);}
+.info-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);margin-bottom:5px;}
+.info-value{font-size:13px;color:var(--text);line-height:1.5;}
+.info-value.bold{font-weight:600;color:var(--accent);}
+.info-value.small{font-size:12px;color:var(--text2);margin-top:2px;}
+.info-ref{font-size:11px;color:var(--text3);margin-top:4px;font-family:monospace;}
+.map-link{display:block;text-align:center;padding:10px;background:rgba(91,156,240,0.1);border:1px solid rgba(91,156,240,0.25);color:var(--accent2);border-radius:10px;font-size:13px;font-weight:500;text-decoration:none;margin-top:2px;}
+.expand-btn{width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:left;margin-top:4px;}
+.expand-list{margin-top:8px;display:flex;flex-direction:column;gap:6px;}
+.expand-item{background:var(--surface2);border-radius:8px;padding:10px 12px;}
+.expand-name{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.expand-why{display:block;font-size:12px;color:var(--text2);line-height:1.4;}
+.expand-loading{font-size:12px;color:var(--text3);padding:8px;text-align:center;}
+.panel-section{margin:12px 16px;}
+.tip-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;}
+.tip-state{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px;}
+.tip-list{padding-left:16px;display:flex;flex-direction:column;gap:5px;}
+.tip-list li{font-size:13px;color:var(--text2);line-height:1.4;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="app-header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div>
+          <div class="app-title">🇺🇸 Road Trip 2026</div>
+          <div class="app-subtitle">London → Newark → Nashville → Home</div>
+        </div>
+      </div>
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="setView('today')">Today</button>
+        <button class="nav-tab" onclick="setView('all')">All Days</button>
+        <button class="nav-tab" onclick="setView('tips')">Tips &amp; Info</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overview-strip">
+    <div class="ov-item"><span class="ov-num">23</span><span class="ov-label">Days</span></div>
+    <div class="ov-divider"></div>
+    <div class="ov-item"><span class="ov-num">8</span><span class="ov-label">States</span></div>
+    <div class="ov-divider"></div>
+    <div class="ov-item"><span class="ov-num">~2,200</span><span class="ov-label">Miles</span></div>
+    <div class="ov-divider"></div>
+    <div class="ov-item"><span class="ov-num">17 Jun</span><span class="ov-label">Depart</span></div>
+    <div class="ov-divider"></div>
+    <div class="ov-item"><span class="ov-num">8 Jul</span><span class="ov-label">Fly Home</span></div>
+  </div>
+
+  <div id="viewToday"></div>
+  <div id="viewAll" class="hidden"></div>
+  <div id="viewTips" class="hidden"></div>
+</div>
+
+<script>
+const TRIP = [
+  {day:1,date:"2026-06-17",disp:"Wed 17 Jun",driving:false,city:"Westfield",state:"NJ",lat:40.659,lon:-74.3467,
+   activity:"✈️ Fly: London Heathrow T5 → Newark. BA0189 Departs 16:35, Arrives 19:25",
+   details:"Booking Ref: ZZ6WVN | Ticket No: 125-2226384543 | Economy Seats 40K",
+   stayName:"Roger & Dee Barnes",stayAddr:"425 Tremont Avenue, Westfield, NJ 07090",ref:"ZZ6WVN",
+   notes:"£700 Paid. Elizabeth Line to LHR T5. Book Lounge + Get E-sim before flying. Collect Hire Car on arrival: Ford Explorer 7 Pax — Avis Conf: 04251600US3 | Hola: HOLA10041826 | $1,976.90 Paid, $334 at drop off.",
+   map:"https://maps.app.goo.gl/QQLifM2tYjzGRPkd9"},
+  {day:2,date:"2026-06-18",disp:"Thu 18 Jun",driving:false,city:"Westfield",state:"NJ",lat:40.659,lon:-74.3467,
+   activity:"@ Roger & Dee Barnes — Rest & Recover",details:"Jet lag day — take it easy!",
+   stayName:"Roger & Dee Barnes",stayAddr:"425 Tremont Avenue, Westfield, NJ 07090",ref:"Hosts",
+   notes:"Dinner out?",
+   tip:"🥯 Westfield has a lovely downtown with great brunch spots — ease into the trip gently!"},
+  {day:3,date:"2026-06-19",disp:"Fri 19 Jun",driving:false,city:"New York",state:"NY",lat:40.7128,lon:-74.006,
+   activity:"Day Trip: New York City 🗽",details:"Train from Westfield into NYC — 45 mins",
+   stayName:"Roger & Dee Barnes",stayAddr:"425 Tremont Avenue, Westfield, NJ 07090",ref:"Hosts",
+   notes:"Meet Grace, Fearg & Rich",
+   tip:"🗽 NJ Transit from Westfield direct to Penn Station. Get an all-day MetroCard for the subway."},
+  {day:4,date:"2026-06-20",disp:"Sat 20 Jun",driving:true,city:"Newport",state:"RI",lat:41.4901,lon:-71.3128,
+   activity:"Drive to Newport, RI via Rye to meet Jonathan",details:"212 miles / 3h 50m",
+   stayName:"Jonathan's (Newport, RI)",stayAddr:"9 Saint Andrews Way, Barrington, RI",ref:"Personal",
+   notes:"Dinner in Newport, RI",map:"https://maps.app.goo.gl/s6NseT6uHJw4kEtr6",
+   tip:"🦞 Newport has world-class lobster — try The Mooring or Scales & Shells on the waterfront."},
+  {day:5,date:"2026-06-21",disp:"Sun 21 Jun",driving:true,city:"Dayville",state:"CT",lat:41.8651,lon:-71.8787,
+   activity:"Morning in Newport — PM Drive to Suchy's Lake House",details:"39 miles / 1h",
+   stayName:"Suchy's Lake House",stayAddr:"65 Island Road, Dayville, CT 06241",ref:"Personal",
+   notes:"Morning in Newport before heading to Connecticut",map:"https://maps.app.goo.gl/iyss5UDM69HnuojWA"},
+  {day:6,date:"2026-06-22",disp:"Mon 22 Jun",driving:false,city:"Dayville",state:"CT",lat:41.8651,lon:-71.8787,
+   activity:"⛳ Golf Day at Suchy's Lake House",details:"Lazy lake day",
+   stayName:"Suchy's Lake House",stayAddr:"65 Island Road, Dayville, CT 06241",ref:"Personal",
+   notes:"Golf day — enjoy the lake!"},
+  {day:7,date:"2026-06-23",disp:"Tue 23 Jun",driving:false,city:"Dayville",state:"CT",lat:41.8651,lon:-71.8787,
+   activity:"⚽ ENGLAND vs GHANA — World Cup 4pm! @ Suchy's Lake House",details:"Day trip option: Providence or Mystic Seaport (54 miles)",
+   stayName:"Suchy's Lake House",stayAddr:"65 Island Road, Dayville, CT 06241",ref:"Personal",
+   notes:"⚽ World Cup: England vs Ghana — 4pm TODAY! Get the beers in. Come on England! 🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+   map:"https://maps.app.goo.gl/cwJuyBk9TquWJHG8A",
+   tip:"🦪 Mystic Seaport is one of New England's best day trips if you want to head out in the morning before the match."},
+  {day:8,date:"2026-06-24",disp:"Wed 24 Jun",driving:true,city:"Latham",state:"NY",lat:42.7473,lon:-73.7565,
+   activity:"Drive to Latham via The Berkshires 🍂",details:"173 miles / 3h — scenic route through The Berkshires",
+   stayName:"The Century House Hotel",stayAddr:"997 New Loudon Road, Latham, NY 12110",ref:"NM3PPKMADF",
+   notes:"Confirmation Code: NM3PPKMADF (Rachel)",map:"https://maps.app.goo.gl/VSe6jSWJrJ6PFL6L9",
+   fuel:"Fill up before entering The Berkshires — rural stretches between Stockbridge and Albany have limited stations.",
+   tip:"🍂 Take MA-7 through Stockbridge & Lenox — one of New England's most scenic drives. Stop for lunch in Stockbridge!"},
+  {day:9,date:"2026-06-25",disp:"Thu 25 Jun",driving:false,city:"Albany",state:"NY",lat:42.6526,lon:-73.7562,
+   activity:"Day in Albany & Troy, NY",details:"7 miles / 17 mins to city centre",
+   stayName:"The Century House Hotel",stayAddr:"997 New Loudon Road, Latham, NY 12110",ref:"NM3PPKMADF",
+   notes:"11:00am Meet Kelly Grimaldi",map:"https://maps.app.goo.gl/R1xkcRp5PprDFUSo7",
+   tip:"🍺 Albany Pump Station brewery is in a stunning Victorian pumping station — great lunch stop."},
+  {day:10,date:"2026-06-26",disp:"Fri 26 Jun",driving:true,city:"Pen Yan",state:"NY",lat:42.6612,lon:-77.053,
+   activity:"AM in Troy — Drive to Pen Yan via Finger Lakes 🍷",details:"211 miles / 3h 20m — scenic Finger Lakes route",
+   stayName:"Keuka Cove Inn",stayAddr:"1756 West Lake Road, Pen Yan, NY 14527",ref:"HMRZMTFHCK",
+   notes:"AirBnb Confirmation Code: HMRZMTFHCK",map:"https://maps.app.goo.gl/xGTwnAkd3MdBGpDh7",
+   fuel:"Fill up in Troy before the Finger Lakes run — stations thin out near Keuka Lake.",
+   tip:"🍷 Finger Lakes wine country — Keuka Lake has excellent Riesling. Ask your host for tasting room tips."},
+  {day:11,date:"2026-06-27",disp:"Sat 27 Jun",driving:true,city:"Buffalo",state:"NY",lat:42.8864,lon:-78.8784,
+   activity:"🏎️ Watkins Glen International — Sahlen's Six Hours! Then drive to Buffalo",details:"31 miles to WG (48 min) + 130 miles to Buffalo (2h 33m)",
+   stayName:"The Mansion — Monet Room",stayAddr:"289 Summer Street, Elmwood, Buffalo NY 14222",ref:"HMH4WT94TD",
+   notes:"🏎️ Sahlen's Six Hours of the Glen! Arrive WG 10–11am via Gate 2, General Access. AirBnb Conf: HMH4WT94TD",
+   map:"https://maps.app.goo.gl/RgCCiJt5FtXgNtiP8",
+   tip:"🌊 Watkins Glen State Park gorge trail is spectacular — arrive early before the race crowds build."},
+  {day:12,date:"2026-06-28",disp:"Sun 28 Jun",driving:true,city:"Niagara Falls",state:"NY",lat:43.0962,lon:-79.0377,
+   activity:"🌊 Niagara Falls Day Trip",details:"20 miles / 30 mins from Buffalo",
+   stayName:"The Mansion — Monet Room",stayAddr:"289 Summer Street, Elmwood, Buffalo NY 14222",ref:"HMH4WT94TD",
+   notes:"Niagara Falls day trip — one of the great natural wonders!",map:"https://maps.app.goo.gl/1SBGe7pEft2T4TFS9",
+   tip:"🇨🇦 Book Maid of the Mist and Cave of the Winds in advance — they sell out on summer weekends."},
+  {day:13,date:"2026-06-29",disp:"Mon 29 Jun",driving:true,city:"Geneva-on-the-Lake",state:"OH",lat:41.862,lon:-80.9487,
+   activity:"Drive to Geneva-on-the-Lake, Ohio via Cleveland",details:"153 miles / 2h 30m — stop at Rock & Roll Hall of Fame, Cleveland!",
+   stayName:"Geneva-on-the-Lake AirBnB",stayAddr:"4971 Presidential Drive, Geneva, Ohio 44041",ref:"HMPKM3MRWX",
+   notes:"Check in after 1pm / Checkout before 11am. AirBnB Conf Code: HMPKM3MRWX",
+   map:"https://maps.app.goo.gl/Poh2MSPjFLpZ5pVi6",
+   tip:"🎸 Rock & Roll Hall of Fame is right on your route in Cleveland — a brilliant stop, allow 2–3 hours."},
+  {day:14,date:"2026-06-30",disp:"Tue 30 Jun",driving:true,city:"Millersburg",state:"OH",lat:40.5548,lon:-81.9185,
+   activity:"Drive to Millersburg via Berlin, OH — Amish Country 🐎",details:"127 miles / 2h 07m",
+   stayName:"Hotel Millersburg",stayAddr:"35 W Jackson St, Millersburg, OH 44654",ref:"73455392838242",
+   notes:"Opodo Conf Code: 73455392838242",map:"https://maps.app.goo.gl/Y5PXz9UhTLHZwvBs5",
+   tip:"🐎 Amish Country: drive slowly — horse & buggies share the road. No photos of people. Visit Lehman's Hardware in Kidron — extraordinary non-electric store."},
+  {day:15,date:"2026-07-01",disp:"Wed 1 Jul",driving:true,city:"Dayton",state:"OH",lat:39.7589,lon:-84.1916,
+   activity:"Drive to Dayton — ✈️ National Museum of the US Air Force",details:"168 miles / 3h 00m",
+   stayName:"Dayton AirBnB",stayAddr:"110 Green Street #3, Dayton, OH 45402",ref:"HMN8B4JDXX",
+   notes:"✈️ National Museum of the US Air Force — world's largest air museum, FREE! Check in after 3pm. AirBnB Conf Code: HMN8B4JDXX",
+   map:"https://maps.app.goo.gl/bxDLfth8mUJnZBJg7",
+   fuel:"Fill up in Dayton before heading south toward Bardstown — good coverage here.",
+   tip:"✈️ Allow a full afternoon at the Air Force Museum — it's vast. Four hangars including Air Force One and Space exhibits."},
+  {day:16,date:"2026-07-02",disp:"Thu 2 Jul",driving:true,city:"Bardstown",state:"KY",lat:37.8117,lon:-85.4669,
+   activity:"Drive Dayton → Bardstown, KY — Bourbon Country 🥃",details:"175 miles / 2h 45m",
+   stayName:"Talbott Tavern and Inn",stayAddr:"107 West Stephen Foster Avenue, Bardstown, KY 40004",
+   ref:"Booking.com: 6223562516 | PIN: 1254",
+   notes:"Standard Suite. Tel: +15023483494. £147 paid.",
+   tip:"🥃 Bardstown is the Bourbon Capital of the World — Heaven Hill & Bardstown Bourbon Company are excellent evening tours."},
+  {day:17,date:"2026-07-03",disp:"Fri 3 Jul",driving:true,city:"Bowling Green",state:"KY",lat:36.9685,lon:-86.4808,
+   activity:"🏞️ Mammoth Cave Historic Tour 10am → 🚗 National Corvette Museum → Bowling Green",details:"Mammoth Cave (30 min from Bardstown) → Corvette Museum, Bowling Green (45 min) — arrive Bowling Green early evening",
+   stayName:"Embassy Suites by Hilton Bowling Green",stayAddr:"556 Hub Blvd, Bowling Green, KY 42103",
+   ref:"Booking.com: 6030020591 | PIN: 0755",
+   notes:"🏞️ Mammoth Cave Historic Tour: 10:00am–12:00pm. Recreation.gov Order No: 0821653956. ⚠️ Check email for separate entry pass! $24 paid.\n\n🚗 National Corvette Museum en route to Bowling Green.\n\nEmbassy Suites: King Studio Suite. £177 paid. Tony's Steak & Seafood on-site — great dinner! Tel: (270) 715-3001",
+   map:"https://maps.google.com/?q=Embassy+Suites+Bowling+Green+KY",
+   fuel:"Fill up in Bowling Green before heading to Nashville — good I-65 coverage.",
+   tip:"🏞️ Your Mammoth Cave Historic Tour is booked 10am–12pm — arrive 15 mins early for check-in. Wear layers, it's 54°F underground year round. Comfortable shoes essential."},
+  {day:18,date:"2026-07-04",disp:"Sat 4 Jul 🎆",driving:true,city:"Nashville",state:"TN",lat:36.1627,lon:-86.7816,
+   activity:"🎆 INDEPENDENCE DAY! Drive to Nashville — arrive late morning",details:"67 miles / 1h from Bowling Green — easy drive, arrive by midday",
+   stayName:"Holiday Inn Express Nashville Metrocenter",stayAddr:"301 Clay Street, Nashville TN 37208",
+   ref:"Booking.com: 5050836144 | PIN: 4002",
+   notes:"🎆 HAPPY 4TH OF JULY! VIP Fireworks tonight — EventBrite ticket in Files/Photos. Tel: +16152546955. Big afternoon & evening ahead — Nashville will be electric!",
+   map:"https://maps.app.goo.gl/LwppxgLW1eB9AcFr7",
+   tip:"🎵 Get to Broadway early on 4th July — it gets absolutely packed. Robert's Western World for the best free live music. Rooftop bars for fireworks views."},
+  {day:19,date:"2026-07-05",disp:"Sun 5 Jul",driving:false,city:"Nashville",state:"TN",lat:36.1627,lon:-86.7816,
+   activity:"Nashville — Chill & Explore 🎵",details:"Recovery day — explore at leisure",
+   stayName:"Holiday Inn Express Nashville Metrocenter",stayAddr:"301 Clay Street, Nashville TN 37208",
+   ref:"Booking.com: 5050836144 | PIN: 4002",
+   notes:"🏎️ F1 British Grand Prix (Silverstone) on TV — find a sports bar! Chill day around Nashville.",
+   tip:"🎵 Ryman Auditorium tours are excellent — book ahead. Country Music Hall of Fame is unmissable, allow 3 hours."},
+  {day:20,date:"2026-07-06",disp:"Mon 6 Jul",driving:true,city:"Franklin",state:"TN",lat:35.9251,lon:-86.8689,
+   activity:"⚔️ Civil War Day — Drive to Franklin, TN",details:"21 miles / 30 mins south of Nashville",
+   stayName:"Holiday Inn Express Nashville Metrocenter",stayAddr:"301 Clay Street, Nashville TN 37208",
+   ref:"Booking.com: 5050836144 | PIN: 4002",
+   notes:"⚔️ Civil War history day — Carter House, Lotz House, Carnton. One of the most moving battlefields in America.",
+   map:"https://maps.app.goo.gl/GjBr4gLk526dbZ4E9",
+   tip:"⚔️ Carter House has original bullet holes in the walls — deeply moving. Allow 2–3 hours for the Franklin sites. Book Carter House tickets in advance."},
+  {day:21,date:"2026-07-07",disp:"Tue 7 Jul",driving:true,city:"Nashville",state:"TN",lat:36.1627,lon:-86.7816,
+   activity:"🚀 Day Trip: Huntsville Space Centre OR Jack Daniel's — 🎵 Grand Ole Opry 7pm tonight!",details:"Huntsville: 2h drive (note: 1hr ahead in Alabama!) OR Jack Daniel's, Lynchburg: 90 mins — back in Nashville for 7pm",
+   stayName:"Holiday Inn Express Nashville Metrocenter",stayAddr:"301 Clay Street, Nashville TN 37208",
+   ref:"Booking.com: 5050836144 | PIN: 4002",
+   notes:"🎵 GRAND OLE OPRY — Opry 100! Tonight 7:00pm. Grand Ole Opry House. Balcony 27, Row H. GoTickets Order: 5534525. Ticket delivered via Mobile Transfer — check your phone!\n\n🚀 Day options: US Space & Rocket Center Huntsville (outstanding) OR 🥃 Jack Daniel's Distillery, Lynchburg (90 mins). Alabama is 1 hour ahead — plan carefully to be back for 7pm!",
+   map:"https://maps.app.goo.gl/u3rxrj9FnjmmWin19",
+   tip:"🎵 Grand Ole Opry tonight — what a way to end the trip! Arrive 30 mins early to soak up the atmosphere. Balcony 27 Row H has great sightlines. Smart casual dress recommended."},
+  {day:22,date:"2026-07-08",disp:"Wed 8 Jul",driving:true,city:"Nashville",state:"TN",lat:36.1245,lon:-86.6782,
+   activity:"✈️ Return Hire Car — Fly Nashville → London Heathrow T3",details:"BA0222 Departs 20:40 — Arrives 10:50 Thu 9 Jul, LHR T3 | Economy Seats 50K",
+   stayName:"Nashville International Airport",stayAddr:"1 Terminal Drive, Nashville TN 37214",ref:"ZZZ6WVN",
+   notes:"Avis return Conf: 04251600US3 | Hola: HOLA10041826 | 7 miles / 15 mins to airport. Return car with a FULL tank! Check in opens ~17:40.",
+   map:"https://maps.app.goo.gl/CuYU2yowHNSdCCGZ6"}
+];
+
+const CULTURAL_TIPS=[
+  {state:"🇺🇸 General US",tips:["Tipping 18–20% expected at sit-down restaurants","Gas stations: pay at pump with card, or pay inside first","Right turn on red is legal unless signed otherwise","Jaywalking laws vary — use crossings in cities","Expect tolls on major roads — keep some cash handy"]},
+  {state:"NJ / NY",tips:["Pumping your own gas is ILLEGAL in New Jersey — an attendant does it!","NYC: keep valuables close on subway","NYC yellow cabs: light on = available, light off = taken","NJ Transit from Westfield to Penn Station NYC is easy and cheap"]},
+  {state:"New England (RI / CT)",tips:["Newport traffic is very heavy on summer weekends — arrive early","Clam chowder is the local speciality — try it at a shack, not a tourist restaurant","Speed limits are strictly enforced in Connecticut"]},
+  {state:"Ohio",tips:["Amish communities near Berlin/Millersburg: drive slowly — horse & buggies share the road","Do not photograph Amish people without asking permission","Ohio has speed cameras — observe limits carefully","Rock & Roll Hall of Fame, Cleveland — unmissable on Day 13!"]},
+  {state:"Kentucky",tips:["Bardstown: minimum age for distillery tours is 21 — carry ID","Jack Daniel's is in a dry county — you can tour but cannot buy whiskey there!","Some rural Kentucky counties are 'dry' — check before assuming alcohol is available","BBQ here often means mutton, not just pork — try it!"]},
+  {state:"Tennessee",tips:["Nashville honky-tonks on Broadway are free entry — tip the bands generously","Hot chicken is the local speciality — Prince's or Hattie B's are legendary","Alabama (Huntsville) is 1 hour ahead of Tennessee — don't get caught out!","Tennessee whiskey vs bourbon — technically different, but both excellent"]}
+];
+
+const WMO={0:"☀️ Clear",1:"🌤 Mainly Clear",2:"⛅ Partly Cloudy",3:"☁️ Overcast",45:"🌫 Foggy",48:"🌫 Icy Fog",51:"🌦 Light Drizzle",53:"🌦 Drizzle",55:"🌧 Heavy Drizzle",61:"🌧 Light Rain",63:"🌧 Rain",65:"🌧 Heavy Rain",71:"🌨 Light Snow",73:"🌨 Snow",75:"❄️ Heavy Snow",80:"🌦 Light Showers",81:"🌧 Showers",82:"⛈ Heavy Showers",95:"⛈ Thunderstorm",96:"⛈ Thunderstorm & Hail",99:"⛈ Heavy Thunderstorm"};
+
+const POI={
+  "Westfield":["🚂 NJ Transit to NYC Penn Station — 45 mins, runs every 30 mins","🍔 Roots Steakhouse — best steak in Westfield","☕ Amongst Friends Coffee — lovely local café","🛍️ Westfield Downtown — charming walkable main street","🌳 Mindowaskin Park — beautiful lake park for a morning stroll"],
+  "New York":["🗽 Staten Island Ferry — free, stunning Statue of Liberty views","🌿 The High Line — elevated park, uniquely NYC","🎵 Jazz at Lincoln Center — world class, check schedule","🥯 Russ & Daughters, Lower East Side — legendary NY appetizing store","🌃 Top of the Rock observation deck — better views than Empire State"],
+  "Newport":["🦞 The Mooring — waterfront seafood, legendary lobster","⛵ Cliff Walk — 3.5 mile coastal path past the Gilded Age mansions","🏛 The Breakers — most spectacular Newport mansion","🎵 Newport Jazz Festival (Jul) — check if dates overlap","🍺 Perro Salado — great cocktail bar on Charles Street"],
+  "Dayville":["🦪 Mystic Seaport Museum — world's largest maritime museum, 30 mins away","🐬 Mystic Aquarium — excellent, especially the beluga whales","⛳ Harrisville Golf Club — local course","🍺 Thomas Hooker Brewery, Hartford — excellent CT craft beer","🌊 Watch Hill, RI — stunning coastal village, 45 mins"],
+  "Latham":["🏛 New York State Capitol Building, Albany — free tours, stunning architecture","⚓ USS Slater WWII Museum — berthed on the Hudson River","🍺 CH Evans Brewing at the Albany Pump Station — stunning Victorian building","🖼 Albany Institute of History & Art — excellent collections","🌿 Washington Park — beautiful for a morning walk"],
+  "Albany":["🏛 New York State Capitol Building — free tours, extraordinary Romanesque architecture","⚓ USS Slater WWII Destroyer Escort — berthed on the Hudson","🍺 CH Evans Brewing, Albany Pump Station — great food and craft beer","🚂 Troy Waterfront Farmers Market (Sat) — outstanding local market","🛶 Hudson River cruises from Albany — scenic"],
+  "Pen Yan":["🍷 Keuka Spring Vineyards — stunning lake views, excellent Riesling","🚣 Keuka Lake kayaking & paddleboarding rentals","🌅 Bluff Point — panoramic view of Keuka Lake's unique Y-shape","🍺 Finger Lakes Beer Trail — 30+ breweries nearby","🎣 Keuka Lake fishing — bass, trout, pike"],
+  "Buffalo":["🖼 Albright-Knox Art Gallery — world-class modern art collection","🍗 Anchor Bar — birthplace of the Buffalo Wing, must visit!","🏟 Sahlen Field — Buffalo Bisons baseball, great atmosphere","🌿 Buffalo Botanical Gardens — stunning Victorian glasshouses","🏛 Buffalo City Hall — observation deck with stunning views, free"],
+  "Niagara Falls":["💦 Maid of the Mist boat tour — book well ahead!","🌊 Cave of the Winds — walk to the brink of Bridal Veil Falls","🌉 Rainbow Bridge — walk to Canada for the best view of both falls","🎆 Illumination of the Falls — every night after dusk, completely free","🚁 Helicopter tours — the most spectacular way to see the falls"],
+  "Geneva-on-the-Lake":["🎸 Rock & Roll Hall of Fame, Cleveland — 45 mins, unmissable!","🌊 Geneva-on-the-Lake Strip — lively mile of bars & restaurants","⛵ Geneva State Park beach & marina","🍷 Ferrante Winery — excellent Lake Erie wine","🎣 Lake Erie fishing charters — world-class walleye fishing"],
+  "Millersburg":["🐎 Amish & Mennonite Heritage Center, Berlin — fascinating cultural museum","🛒 Lehman's Hardware, Kidron — incredible non-electric general store, worth a detour","🧀 Heini's Cheese Chalet — 60+ varieties, free samples","🍺 Millersburg Brewing Company — excellent local craft beer","🚂 Roscoe Village — restored 1830s Ohio & Erie Canal town nearby"],
+  "Dayton":["✈️ National Museum of the US Air Force — world's largest, FREE, allow 4+ hours","🎨 Dayton Art Institute — excellent permanent collection, free admission","🏠 Carillon Historical Park — Wright Brothers' original Flyer III on display","🍺 Fifth Street Brewpub — best local craft beer downtown","🌿 Wegerzyn Gardens MetroPark — beautiful botanical gardens"],
+  "Bardstown":["🥃 Heaven Hill Distillery & Bourbon Heritage Center — world's largest bourbon producer","🥃 Bardstown Bourbon Company — stunning modern distillery, excellent tours","🏛 My Old Kentucky Home State Park — Stephen Foster history","🍽 Talbott Tavern Restaurant — your hotel, established 1779, oldest western stagecoach stop in America!","⛪ St Joseph Proto-Cathedral — oldest Catholic cathedral west of the Alleghenies"],
+  "Bowling Green":["🏞️ Mammoth Cave National Park — longest known cave system in the world, book ahead!","🚗 National Corvette Museum — every Corvette ever made, fascinating","🌊 Lost River Cave — underground boat tour, only one in Kentucky","🍽 Mariah's Restaurant — Bowling Green institution, excellent food","🎳 Beech Bend Park — amusement park & drag strip, great fun"],
+  "Nashville":["🎵 Robert's Western World — Broadway, free entry, best honky-tonk in America","🏛 Country Music Hall of Fame — unmissable, allow 3 hours","🎵 Ryman Auditorium — Mother Church of Country Music, excellent tours","🍗 Hattie B's Hot Chicken — legendary, expect a queue but worth it","🏛 The Hermitage — Andrew Jackson's extraordinary plantation home, 20 mins from downtown"],
+  "Franklin":["⚔️ Carter House — Civil War museum, original bullet holes visible in the walls","⚔️ Lotz House Museum — remarkable Civil War artefacts & personal stories","🌿 Carnton — Confederate cemetery with 1,500 graves, profoundly moving","⛪ St Paul's Episcopal Church — used as field hospital during the Battle of Franklin","🍺 Arrington Vineyards — beautiful Tennessee winery, 20 mins from Franklin"]
+};
+
+let currentView='today',expandedDay=null;
+const poiCache={},wxCache={};
+
+function getTodayIndex(){
+  const t=new Date().toISOString().split('T')[0];
+  const i=TRIP.findIndex(d=>d.date===t);
+  return i>=0?i:-1;
+}
+
+function daysUntil(){
+  const start=new Date('2026-06-17');
+  const now=new Date();now.setHours(0,0,0,0);
+  return Math.ceil((start-now)/(864e5));
+}
+
+async function fetchWeather(lat,lon,id){
+  const el=document.getElementById(id);if(!el)return;
+  const k=`${lat},${lon}`;
+  if(wxCache[k]){el.innerHTML=wxCache[k];return;}
+  el.innerHTML='<div class="weather-loading">🌤 Loading weather…</div>';
+  try{
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`);
+    const d=await r.json();
+    const c=d.current,dl=d.daily;
+    const cond=WMO[c.weather_code]||'🌡 Unknown';
+    const hi=Math.round(dl.temperature_2m_max[0]),lo=Math.round(dl.temperature_2m_min[0]);
+    const t=Math.round(c.temperature_2m),f=Math.round(c.apparent_temperature);
+    const tC=n=>Math.round((n-32)*5/9);
+    const html=`<div class="weather-widget">
+      <div class="weather-main"><span class="weather-temp">${t}°F / ${tC(t)}°C</span><span class="weather-cond">${cond}</span></div>
+      <div class="weather-details"><span>↑${hi}°F/${tC(hi)}°C</span><span>↓${lo}°F/${tC(lo)}°C</span><span>Feels ${f}°F/${tC(f)}°C</span><span>💧${c.relative_humidity_2m}%</span><span>💨${Math.round(c.wind_speed_10m)}mph</span></div>
+    </div>`;
+    wxCache[k]=html;el.innerHTML=html;
+  }catch(e){el.innerHTML='<div class="weather-loading">Weather unavailable — check connection</div>';}
+}
+
+function trafficLink(day){
+  if(!day.driving)return'';
+  const dest=encodeURIComponent(day.city+', '+day.state);
+  return`<a href="https://www.google.com/maps/dir/?api=1&destination=${dest}&travelmode=driving" target="_blank" class="map-link">🚦 Check Live Traffic to ${day.city}</a>`;
+}
+
+function setView(v){
+  currentView=v;
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>t.classList.toggle('active',['today','all','tips'][i]===v));
+  document.getElementById('viewToday').classList.toggle('hidden',v!=='today');
+  document.getElementById('viewAll').classList.toggle('hidden',v!=='all');
+  document.getElementById('viewTips').classList.toggle('hidden',v!=='tips');
+  if(v==='tips'&&!document.getElementById('viewTips').dataset.built)buildTips();
+  if(v==='all'&&!document.getElementById('viewAll').dataset.built)buildAllDays();
+}
+
+function toggleDay(n){
+  expandedDay=expandedDay===n?null:n;
+  renderCurrentView();
+  if(expandedDay)setTimeout(()=>{const el=document.getElementById('daycard-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+}
+
+function renderCurrentView(){
+  if(currentView==='today')buildToday();
+  else if(currentView==='all')buildAllDays();
+}
+
+function cardHTML(day,expanded,isToday){
+  let inner='';
+  if(expanded){
+    inner=`<div class="day-expanded">
+      <div id="wx-${day.day}"><div class="weather-loading">🌤 Loading weather…</div></div>
+      ${trafficLink(day)}
+      <div class="info-grid">
+        ${day.driving&&day.details?`<div class="info-block drive"><div class="info-label">🛣️ Drive</div><div class="info-value">${day.details}</div></div>`:''}
+        <div class="info-block stay">
+          <div class="info-label">🏨 Staying At</div>
+          <div class="info-value bold">${day.stayName}</div>
+          <div class="info-value small">${day.stayAddr}</div>
+          <div class="info-ref">Ref: ${day.ref}</div>
+        </div>
+        ${day.notes?`<div class="info-block notes-block"><div class="info-label">📝 Notes</div><div class="info-value">${day.notes}</div></div>`:''}
+        ${day.fuel?`<div class="info-block fuel"><div class="info-label">⛽ Fuel Alert</div><div class="info-value">${day.fuel}</div></div>`:''}
+        ${day.tip?`<div class="info-block suggestion"><div class="info-label">💡 Trip Tip</div><div class="info-value">${day.tip}</div></div>`:''}
+      </div>
+      ${day.map?`<a href="${day.map}" target="_blank" class="map-link">🗺️ Open Route in Maps</a>`:''}
+      <div>
+        <button class="expand-btn" onclick="event.stopPropagation();togglePOI(${day.day})">📍 Highlights & Things To Do</button>
+        <div id="poi-${day.day}" class="hidden"></div>
+      </div>
+    </div>`;
+  }
+  return`<div id="daycard-${day.day}" class="day-card${expanded?' active':''}${isToday?' today-card':''}" onclick="toggleDay(${day.day})">
+    <div class="day-header">
+      <span class="day-number">Day ${day.day}</span>
+      <span class="day-date-lbl">${day.disp}</span>
+      ${isToday?'<span class="today-badge">📍 Today</span>':day.driving?'<span class="driving-badge">🚗 Driving</span>':''}
+    </div>
+    <div class="day-city">${day.city}${isToday?', '+day.state:''}</div>
+    <div class="day-activity-text">${day.activity}</div>
+    ${inner}
+  </div>`;
+}
+
+function afterRender(day){
+  if(expandedDay===day.day)fetchWeather(day.lat,day.lon,'wx-'+day.day);
+}
+
+function buildToday(){
+  const idx=getTodayIndex();
+  if(idx===-1){
+    const days=daysUntil();
+    document.getElementById('viewToday').innerHTML=`
+      <div class="pre-trip">
+        <div class="pre-trip-title">✈️ Adventure Awaits!</div>
+        <div class="pre-trip-sub">Your road trip begins Wed 17 June 2026</div>
+        <div class="countdown">${days}</div>
+        <div class="countdown-label">days to go 🚗</div>
+      </div>
+      <div class="section-header">First Days of the Trip</div>
+      <div class="days-list">${TRIP.slice(0,3).map(d=>cardHTML(d,expandedDay===d.day,false)).join('')}</div>`;
+    TRIP.slice(0,3).forEach(afterRender);
+    return;
+  }
+  const today=TRIP[idx];
+  const upcoming=TRIP.slice(idx+1,idx+4);
+  document.getElementById('viewToday').innerHTML=`
+    <div class="today-hero">
+      <div class="today-label">Today — Day ${today.day}</div>
+      <div class="today-city">${today.city}, ${today.state}</div>
+      <div class="today-date-lbl">${today.disp}</div>
+      <div class="today-activity">${today.activity}</div>
+      <div id="hero-wx"><div class="weather-loading">🌤 Loading weather…</div></div>
+      ${trafficLink(today)}
+    </div>
+    <div class="days-list">${cardHTML(today,expandedDay===today.day,true)}</div>
+    ${upcoming.length?'<div class="section-header">Coming Up Next</div><div class="days-list">'+upcoming.map(d=>cardHTML(d,expandedDay===d.day,false)).join('')+'</div>':''}`;
+  fetchWeather(today.lat,today.lon,'hero-wx');
+  [today,...upcoming].forEach(afterRender);
+}
+
+function buildAllDays(){
+  const idx=getTodayIndex();
+  const todayDay=idx>=0?TRIP[idx].day:-1;
+  document.getElementById('viewAll').innerHTML=
+    '<div class="section-header">Full 22-Day Itinerary</div><div class="days-list">'+
+    TRIP.map(d=>cardHTML(d,expandedDay===d.day,d.day===todayDay)).join('')+'</div>';
+  document.getElementById('viewAll').dataset.built='1';
+  TRIP.forEach(afterRender);
+}
+
+function buildTips(){
+  const tipHTML=CULTURAL_TIPS.map(t=>`<div class="tip-block"><div class="tip-state">${t.state}</div><ul class="tip-list">${t.tips.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('');
+  document.getElementById('viewTips').innerHTML=`
+    <div class="panel-section"><div class="tip-block"><div class="tip-state">🌍 Cultural & Safety Tips</div>${tipHTML}</div></div>
+    <div class="panel-section"><div class="tip-block">
+      <div class="tip-state">⛽ Fuel Planning</div>
+      <ul class="tip-list">${TRIP.filter(d=>d.fuel).map(d=>`<li><strong>Day ${d.day} — ${d.city}:</strong> ${d.fuel}</li>`).join('')}</ul>
+    </div></div>
+    <div class="panel-section"><div class="tip-block">
+      <div class="tip-state">🚗 Hire Car</div>
+      <ul class="tip-list">
+        <li>Ford Explorer — 7 Passengers</li>
+        <li>Avis Conf: 04251600US3 | Hola: HOLA10041826</li>
+        <li>$1,976.90 paid + $334 at drop off</li>
+        <li>Pickup: Newark Airport — Drop off: Nashville Airport</li>
+        <li>⚠️ Return car with a FULL tank!</li>
+      </ul>
+    </div></div>
+    <div class="panel-section"><div class="tip-block">
+      <div class="tip-state">✈️ Flights</div>
+      <ul class="tip-list">
+        <li><strong>Out:</strong> BA0189 LHR T5 → Newark. 17 Jun, 16:35 → 19:25. Ref: ZZ6WVN | Seats: 40K</li>
+        <li><strong>Return:</strong> BA0222 Nashville → LHR T3. 8 Jul, 20:40 → 10:50 (9 Jul). Ref: ZZZ6WVN | Seats: 50K</li>
+      </ul>
+    </div></div>
+    <div class="panel-section"><div class="tip-block">
+      <div class="tip-state">🏨 All Accommodation Refs</div>
+      <ul class="tip-list">
+        ${TRIP.filter(d=>d.ref&&d.ref!=='Hosts'&&d.ref!=='Personal').map(d=>`<li><strong>Day ${d.day} — ${d.stayName}:</strong> ${d.ref}</li>`).join('')}
+      </ul>
+    </div></div>
+    <div class="panel-section"><div class="tip-block">
+      <div class="tip-state">💡 Trip Tips by Day</div>
+      <ul class="tip-list">${TRIP.filter(d=>d.tip).map(d=>`<li><strong>Day ${d.day} — ${d.city}:</strong> ${d.tip}</li>`).join('')}</ul>
+    </div></div>`;
+  document.getElementById('viewTips').dataset.built='1';
+}
+
+function togglePOI(n){
+  const el=document.getElementById('poi-'+n);
+  const hiding=!el.classList.contains('hidden');
+  el.classList.toggle('hidden');
+  if(!hiding){
+    if(poiCache[n]){el.innerHTML=poiCache[n];return;}
+    const day=TRIP.find(d=>d.day===n);
+    const preset=POI[day.city];
+    if(preset){
+      const html='<div class="expand-list">'+preset.map(p=>{const pts=p.split(' — ');return`<div class="expand-item"><span class="expand-name">${pts[0]}</span>${pts[1]?`<span class="expand-why">${pts[1]}</span>`:''}</div>`;}).join('')+'</div>';
+      poiCache[n]=html;el.innerHTML=html;
+    }else{
+      el.innerHTML=`<div class="expand-loading">Search Google Maps for things to do in ${day.city}</div>`;
+    }
+  }
+}
+
+buildToday();
+</script>
+</body>
+</html>
